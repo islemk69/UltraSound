@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2022",               // Version ECMAScript cible
+    "module": "commonjs",             // Module système utilisé
+    "outDir": "dist",                 // Dossier de sortie des fichiers compilés
+    "rootDir": "src",                 // Répertoire racine des fichiers sources
+    "strict": true,                   // Activer toutes les vérifications strictes
+    "esModuleInterop": true,          // Compatibilité avec les modules CommonJS
+    "resolveJsonModule": true,        // Autoriser l'import de fichiers JSON
+    "skipLibCheck": true              // Ignorer les vérifications de type des bibliothèques
+  },
+  "include": ["src/**/*"],                 // Inclut tous les fichiers dans src/
+  "exclude": ["node_modules", "dist"] // Exclut les dossiers node_modules et dist
+}
