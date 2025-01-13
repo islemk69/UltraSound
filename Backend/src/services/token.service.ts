@@ -1,4 +1,13 @@
 import jwt from 'jsonwebtoken'
+import UserService from './user.service';
+import { Decipher } from 'crypto';
+import { userInfo } from 'os';
+
+interface JwtPayload {
+  id: number;
+  username: string;
+  email: string;
+}
 
 class TokenService {
   static generateTokens(payload: { id: number; username: string, email: string }) {
@@ -11,17 +20,23 @@ class TokenService {
 
     return { accessToken, refreshToken };
   }
-  static refreshToken(req: Request) {
+  static async refreshToken(token: string) {
     if (!process.env.ACCESS_SECRET || !process.env.REFRESH_SECRET) {
       throw new Error("Access token not defined.");
     }
     try {
-      
+      const decoded = jwt.decode(token) as JwtPayload;
+      if (!decoded)
+        throw new Error("Invalid Token Provider");
+      const user = await UserService.findUserById(decoded.id);
+      if (!user)
+        throw new Error("Refresh token user not found.");
+      const newAccessToken = jwt.sign({id: user.id, username: user.username, email: user.email}, process.env.ACCESS_SECRET, { expiresIn: "1h" });
+      return newAccessToken;
     }
     catch (error) {
-      throw new Error("");
+      throw new Error("Error while refreshing token.");
     }
-
   }
 }
 
