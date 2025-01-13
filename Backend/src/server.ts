@@ -1,12 +1,19 @@
+
+
 import express, { Request, Response } from 'express';
 import sequelize from './config/database'
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import morgan from "morgan"
+import cookieParser from 'cookie-parser';
+
+
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(cookieParser());
 
 (async () => {
   try {
@@ -34,4 +41,3 @@ app.use('/api/auth', authRoutes);
 app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'Le serveur fonctionne avec TypeScript !' });
 });
-

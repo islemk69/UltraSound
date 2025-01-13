@@ -1,7 +1,20 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 
-class User extends Model {
+interface UserAttributes {
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+// Interface pour les attributs nécessaires à la création
+interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
+
+// Classe User avec les méthodes Sequelize
+class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: number;
   public username!: string;
   public email!: string;
@@ -9,6 +22,7 @@ class User extends Model {
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
+
 
 User.init(
   {

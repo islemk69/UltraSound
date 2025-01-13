@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import UserService from "../services/user.service";
-import bcrypt from 'bcryptjs'
+import UserService  from "../services/user.service";
+import TokenService from "../services/token.service";
 
 
 export const register = async (req: Request, res: Response): Promise<void> => {
@@ -47,7 +47,7 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     if (!process.env.ACCESS_SECRET || !process.env.REFRESH_SECRET)
       return res.status(500).json({message: "La clé secrète JWT (ACCESS_TOKEN) n'est pas définie."});
 
-    const { accessToken, refreshToken } = UserService.generateTokens({
+    const { accessToken, refreshToken } = TokenService.generateTokens({
       id: user.id,
       username: user.username,
       email: user.email,
