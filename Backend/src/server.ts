@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import morgan from "morgan"
 import cookieParser from 'cookie-parser';
+import cors from "cors"
 
 
 dotenv.config();
@@ -13,6 +14,11 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors({
+  origin: ['*'], // Autorise uniquement cette origine
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Méthodes autorisées
+  credentials: true, // Autorise les cookies ou les en-têtes d'authentification
+}));
 app.use(cookieParser());
 
 (async () => {

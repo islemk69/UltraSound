@@ -17,7 +17,7 @@ class UserService {
   }
 
   static async findUserById(id: number) {
-    return User.findByPk(id);
+    return User.findOne({where: {id}, raw: true});
   }
   
   static async findUserByIdentifier(identifier: string, type: 'email' | 'username') {
@@ -25,10 +25,6 @@ class UserService {
       return this.findUserbyEmail(identifier);
     }
     return this.findUserbyUsername(identifier);
-  }
-
-  static async verifyPassword(password: string, hashedPassword: string) {
-    return bcrypt.compare(password, hashedPassword);
   }
 }
 

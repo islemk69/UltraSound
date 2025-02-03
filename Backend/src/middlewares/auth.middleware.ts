@@ -9,15 +9,16 @@ interface JwtPayload {
 
 const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
   try {
+    console.log("je VERIFIE")
     const token = req.cookies.accessToken;
     console.log(token)
     if (!token) {
-      res.status(401).json({ message: "Access token is missing." });
+      res.status(401).json({success: false, message: "Access token is missing." });
       return ;
     }
 
     if (!process.env.ACCESS_SECRET) {
-      res.status(500).json({ message: "JWT secret is not defined." });
+      res.status(500).json({success: false, message: "JWT secret is not defined." });
       return ;
     }
 
@@ -31,7 +32,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
     next();
   } catch (error) {
     console.error("Token verification failed:", error);
-    res.status(401).json({ message: "Invalid or expired access token." });
+    res.status(401).json({success: false, message: "Invalid or expired access token." });
     return ;
   }
 };

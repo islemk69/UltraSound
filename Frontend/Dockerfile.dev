@@ -1,0 +1,20 @@
+# Utiliser l'image Node.js spécifiée
+FROM node:23.6.0-alpine3.20
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier les fichiers package.json et package-lock.json pour installer les dépendances
+COPY package*.json ./
+
+# Installer les dépendances
+RUN npm install
+
+# Copier tous les fichiers du projet
+COPY . .
+
+# Exposer le port utilisé par le serveur Nuxt
+EXPOSE 8000
+
+# Commande pour lancer le serveur de développement
+CMD ["npm", "run", "dev"]
