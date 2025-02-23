@@ -32,7 +32,6 @@ class TokenService {
       const user = await UserService.findUserById(decoded.id);
       if (!user)
         throw new Error("Refresh token user not found.");
-      console.log(user.id, user.username, user.email)
       const newAccessToken = jwt.sign({id: user.id, username: user.username, email: user.email}, process.env.ACCESS_SECRET, { expiresIn: "1h" });
       return newAccessToken;
     }

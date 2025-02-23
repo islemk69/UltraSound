@@ -36,16 +36,13 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
       return (res.status(400).json({success: false, message: "Username or Email required."}));
     }
     const identifer = username || email;
-    console.log("hi")
     const identiferType = username ? "username" : "email";
     const user = await UserService.findUserByIdentifier(identifer!, identiferType);
     if (!user)
       return res.status(409).json({success: false, message: "Invalid uesername or e-mail"});
-    console.log(user);
     const isPasswordValid = await AuthService.verifyPassword(password, user.password);
     if (!isPasswordValid)
       return res.status(401).json({success: false, message: "Invalid password." });
-    console.log("yooooo")
     if (!process.env.ACCESS_SECRET || !process.env.REFRESH_SECRET)
       return res.status(500).json({success: false, message: "La clé secrète JWT (ACCESS_TOKEN) n'est pas définie."});
 
@@ -92,10 +89,8 @@ export const refreshToken = async (req: Request, res: Response) => {
     if (!refreshToken) {
       return res.status(401).json({success: false,  message: "Refresh token is required." });
     }
-    console.log("refresh token cookie: ", refreshToken);
     // Rafraîchir le  token
     const newAccessToken = await TokenService.refreshToken(refreshToken);
-    console.log("newaccess: ",newAccessToken );
     // Mettre à jour le cookie accessToken
     const isProd = process.env.NODE_ENV === "production";
     res.cookie("accessToken", newAccessToken, {

@@ -9,9 +9,7 @@ interface JwtPayload {
 
 const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
   try {
-    console.log("je VERIFIE")
     const token = req.cookies.accessToken;
-    console.log(token)
     if (!token) {
       res.status(401).json({success: false, message: "Access token is missing." });
       return ;
